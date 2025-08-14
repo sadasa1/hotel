@@ -1,0 +1,14 @@
+build/
+debug/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.o
+*.a
+*.dSYM/
+.DS_Store
+*.so 
+*.dylib
+*.dll
+*.exe
