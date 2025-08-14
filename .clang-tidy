@@ -1,0 +1,12 @@
+Checks: >
+  bugprone-*,
+  performance-*,
+  readability-*,
+  modernize-*,
+  cppcoreguidelines-avoid-c-arrays,
+  cppcoreguidelines-virtual-class-destructor,
+  -modernize-use-trailing-return-type,
+  -readability-magic-numbers
+WarningsAsErrors: ''
+HeaderFilterRegex: '^(include|src)/'
+FormatStyle: none
