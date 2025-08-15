@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "Scene.h"
+#include "Hotel.h"
 #include "scenes/SceneCheckIn.h"
 
 class App {
@@ -12,7 +13,8 @@ public:
     void run(); 
 private:
     sf::RenderWindow window; 
-    std::unique_ptr<Scene> currScene; 
+    std::unique_ptr<Scene> currScene;
+    Hotel m_hotel;  
 };
 
 #endif // APP_H
