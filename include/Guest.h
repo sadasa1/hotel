@@ -5,15 +5,14 @@
 
 struct Guest {
     struct Date {
-        int year;
-        int month;
-        int day;
+        std::string month;
+        std::string day;
+        std::string year;
     };
 
     Date dateOfBirth;
     std::string name; 
-    int guestID; 
-
+    std::string guestID; 
 
     std::string portraitID; 
 };
