@@ -1,11 +1,10 @@
-
-#include <SFML/Graphics.hpp>
-#include <App.h>
-#include <Scene.h>
+#include "Hotel.h"
+#include "App.h"
+#include <iostream>
+#include <vector>
 
 int main() {
-    App game; 
-    game.run();     
-
+    App game;
+    game.run(); 
     return 0;
 }

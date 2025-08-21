@@ -4,10 +4,18 @@
 #include <string>
 
 struct Badge {
-    std::string badge_name; 
-    int badge_guestID; 
+    std::string guestID;
+    std::string name; 
+    std::string portraitID;
+};
 
-    std::string badge_portraitID; 
+struct LivePerson {
+    std::string observedPortraitID;
+};
+
+struct Claimer {
+    Badge badge;
+    LivePerson live; 
 };
 
 #endif // BADGE_H
