@@ -9,7 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # ---------- SFML 3 ----------
 # If CMake can't find SFML automatically, point SFML_DIR at:
 #   -DSFML_DIR="$(brew --prefix sfml)/lib/cmake/SFML"
-find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
+find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System Audio)
 
 # ---------- Includes ----------
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -20,7 +20,7 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 
 
 add_executable(hotel_game ${SOURCES})
-target_link_libraries(hotel_game PRIVATE SFML::Graphics SFML::Window SFML::System)
+target_link_libraries(hotel_game PRIVATE SFML::Graphics SFML::Window SFML::System SFML::Audio)
 
 # ---------- Build Type Defaults ----------
 if(NOT CMAKE_BUILD_TYPE)

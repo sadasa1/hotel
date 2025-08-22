@@ -3,7 +3,7 @@
 Room::Room(int roomNumber) : m_number(roomNumber), m_currentGuestID("-1"), m_isOccupied(false) { }
 
 bool Room::isEmpty() {
-    return m_isOccupied;
+    return !m_isOccupied;
 }
 
 void Room::assignGuest(std::string guestID) {
@@ -12,6 +12,6 @@ void Room::assignGuest(std::string guestID) {
 }
 
 void Room::vacate() {
-    m_currentGuestID = -1;
+    m_currentGuestID = "-1";
     m_isOccupied = false; 
 }

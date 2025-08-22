@@ -1,4 +1,5 @@
 #include "scenes/SceneCheckIn.h"
+#include "Hotel.h"
 
 static sf::Vector2f deskPos{40.f, 40.f};
 static float lineHeight = 26.f;
@@ -25,7 +26,7 @@ SceneCheckIn::SceneCheckIn(sf::RenderWindow* win, Hotel* h)
 , m_flagColor(200, 40, 40)
 {
     (void)m_font.openFromFile("assets/fonts/BMmini.TTF");
-    // Assign fonts after loading
+
     m_approveLabel.setFont(m_font);
     m_flagLabel.setFont(m_font);
     m_guestID.setFont(m_font);
@@ -38,6 +39,29 @@ SceneCheckIn::SceneCheckIn(sf::RenderWindow* win, Hotel* h)
 
     styleButton(m_approveButton, m_approveLabel, approvePos, buttonSize, "APPROVE", m_approveColor);
     styleButton(m_flagButton,    m_flagLabel,    flagPos, buttonSize, "FLAG",    m_flagColor);
+
+    (void)m_clickDownBuf.loadFromFile("assets/sfx/mouseClickDown.wav");
+    (void)m_clickUpBuf.loadFromFile("assets/sfx/mouseClickUp.wav");
+
+    m_clickDown.reserve(5);
+    m_clickUp.reserve(5);
+
+    for (int i = 0; i < 5; i++) {
+        m_clickDown.emplace_back(m_clickDownBuf);
+        m_clickUp.emplace_back(m_clickUpBuf);
+        m_clickDown.back().setRelativeToListener(true);
+        m_clickUp.back().setRelativeToListener(true);
+    }
+}
+
+void SceneCheckIn::playFromPool(std::vector<sf::Sound>& pool, float volume) {
+    for (auto& s : pool) {
+        if (s.getStatus() != sf::Sound::Status::Playing) {
+            s.setVolume(volume);
+            s.play();
+            return;
+        }
+    }
 }
 
 void SceneCheckIn::enter() {
@@ -75,7 +99,6 @@ void SceneCheckIn::styleButton(sf::RectangleShape& r, sf::Text& label, const sf:
 }
 
 void SceneCheckIn::loadNextClaimer() {
-    m_decision.reset(); 
     m_curr = m_hotel->loadClaimer();
 
     if (!m_curr) {
@@ -93,21 +116,17 @@ void SceneCheckIn::loadNextClaimer() {
 }
 
 void SceneCheckIn::onApprove() {
-    m_decision = DeskDecision::APPROVE;
+    if (!m_curr) { return; }
+    auto res = m_hotel->resolveDecision(DeskDecision::APPROVE);
+    std::cout << res.reason << std::endl; 
 
-    // TODO: hook into Hotel (assign room / enqueue entrance walk).
-    // e.g. if you add an API later:
-    // m_hotel->approveAtDesk(*m_curr);
-
-    loadNextClaimer(); // move on to the next claimer
+    loadNextClaimer();
 }
 
 void SceneCheckIn::onFlag() {
-    m_decision = DeskDecision::FLAG;
-
-    // TODO: hook into Hotel (log identity anomaly / deny).
-    // e.g.:
-    // m_hotel->flagAtDesk(*m_curr);
+    if (!m_curr) {return; }
+    auto res = m_hotel->resolveDecision(DeskDecision::FLAG);
+    std::cout << res.reason << std::endl; 
 
     loadNextClaimer();
 }
@@ -140,9 +159,11 @@ void SceneCheckIn::handleEvent(const sf::Event& event) {
         }
         if (m_approveButton.getGlobalBounds().contains(pos)) {
             m_approvePressed = true; 
+            playFromPool(m_clickDown, 80.f);
         }
         else if (m_flagButton.getGlobalBounds().contains(pos)) {
             m_flagPressed = true; 
+            playFromPool(m_clickDown, 80.f);
         }
     }
 
@@ -150,9 +171,11 @@ void SceneCheckIn::handleEvent(const sf::Event& event) {
         if (mr->button == sf::Mouse::Button::Left) {
             sf::Vector2f pos = m_win->mapPixelToCoords({mr->position.x, mr->position.y});
             if (m_approvePressed && m_approveButton.getGlobalBounds().contains(pos)) {
+                playFromPool(m_clickUp, 100.f);
                 onApprove();
             }
             if (m_flagPressed && m_flagButton.getGlobalBounds().contains(pos)) {
+                playFromPool(m_clickUp, 100.f);
                 onFlag(); 
             }
 
@@ -209,3 +232,4 @@ void SceneCheckIn::draw(sf::RenderTarget& target) {
     target.draw(m_badgePortrait);
     target.draw(m_liveSprite);
 }
+

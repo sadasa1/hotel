@@ -1,8 +1,10 @@
 #ifndef HOTEL_H
 #define HOTEL_H
 
+#include "DeskDecision.h"
 #include "Room.h"
 #include "Badge.h"
+#include "scenes/SceneCheckIn.h"
 #include "Guest.h"
 #include <vector>
 #include <fstream>
@@ -44,6 +46,15 @@ public:
 
     void injectAnomaly(Claimer& c);
 
+    std::string badgeErrToString(BadgeError err);
+
+    struct DecisionResult {
+        bool correct;
+        std::string reason;
+        std::string guestID;
+    };
+    
+    DecisionResult resolveDecision(DeskDecision decision);
 
 private:
     const int m_numberOfRooms = 5; 
@@ -53,7 +64,6 @@ private:
     std::vector<Guest> m_roundGuests; 
 
     std::mt19937 m_rng;
-
 
     std::unordered_map<std::string, int> m_roundGuestsByID;
     std::unordered_map<std::string, int> m_roomNumbersByID;

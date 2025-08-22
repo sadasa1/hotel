@@ -292,3 +292,54 @@ std::string Hotel::pickRandomID(const std::unordered_set<std::string>& s, std::m
     auto it = s.begin(); std::advance(it, target);
     return *it;
 }
+
+std::string Hotel::badgeErrToString(BadgeError err) {
+    switch (err) {
+        case Hotel::BadgeError::BAD_FORMAT:
+            return "ID WAS INVALID";
+        case Hotel::BadgeError::ALREADY_INSIDE:
+            return "GUEST WAS ALREADY INSIDE";
+        case Hotel::BadgeError::PORTRAIT_MISMATCH:
+            return "PORTRAIT WAS INVALID";
+        case Hotel::BadgeError::UNKNOWN_ID:
+            return "UNKNOWN ID";
+        default:
+            return "CLEAN";
+    }
+}
+
+Hotel::DecisionResult Hotel::resolveDecision(DeskDecision decision) {
+    DecisionResult res{false, "CLEAN", ""};
+
+    if (!m_currClaimer) {
+        return res; 
+    }
+
+    res.guestID = m_currClaimer->badge.guestID;
+    BadgeError err = verifyBadge(m_currClaimer->badge, m_currClaimer->live);
+
+    if (err == BadgeError::NONE) {
+        if (decision == DeskDecision::APPROVE) {
+            res.correct = true; 
+        }
+        else {
+            res.correct = false; 
+        }
+    }
+    else {
+        if (decision == DeskDecision::FLAG) {
+            res.correct = true; 
+        }
+        else {
+            res.correct = false; 
+        }
+    }
+
+    res.reason = badgeErrToString(err); 
+    if (res.correct && err == BadgeError::NONE) {
+        enter(res.guestID);
+    }
+
+    resolveClaimer(); 
+    return res; 
+}

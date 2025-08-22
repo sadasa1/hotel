@@ -2,7 +2,6 @@
 #define SCENE_H
 
 #include <SFML/Graphics.hpp>
-#include <Hotel.h>
 
 class Scene {
 public:

@@ -2,15 +2,20 @@
 #define SCENECHECKIN_H
 
 #include "Scene.h"
-#include "Hotel.h"
+#include "DeskDecision.h"
 #include <optional>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+
+class Hotel;
+struct Claimer; 
 
 class SceneCheckIn : public Scene {
 public: 
     explicit SceneCheckIn(sf::RenderWindow* win, Hotel* h); 
     virtual ~SceneCheckIn() = default; 
-
+    void playFromPool(std::vector<sf::Sound>& pool, float volume);
 
     virtual void enter();
     virtual void exit(); 
@@ -26,7 +31,7 @@ public:
     void styleButton(sf::RectangleShape& r, sf::Text& label, const sf::Vector2f& pos, const sf::Vector2f& size, 
                     const std::string& text, const sf::Color color);
 
-    enum class DeskDecision {APPROVE, FLAG};
+
 
 private:
     sf::RenderWindow* m_win; 
@@ -40,7 +45,10 @@ private:
     sf::Text m_flagLabel; 
     sf::Color m_flagColor; 
 
-    std::optional<DeskDecision> m_decision; 
+    sf::SoundBuffer m_clickDownBuf;
+    sf::SoundBuffer m_clickUpBuf;
+    std::vector<sf::Sound> m_clickDown; 
+    std::vector<sf::Sound> m_clickUp;
 
     sf::Font m_font;
 
