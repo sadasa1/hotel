@@ -31,8 +31,6 @@ public:
     void styleButton(sf::RectangleShape& r, sf::Text& label, const sf::Vector2f& pos, const sf::Vector2f& size, 
                     const std::string& text, const sf::Color color);
 
-
-
 private:
     sf::RenderWindow* m_win; 
     Hotel* m_hotel; 

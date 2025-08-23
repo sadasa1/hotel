@@ -118,7 +118,7 @@ void SceneCheckIn::loadNextClaimer() {
 void SceneCheckIn::onApprove() {
     if (!m_curr) { return; }
     auto res = m_hotel->resolveDecision(DeskDecision::APPROVE);
-    std::cout << res.reason << std::endl; 
+    std::cout << res.correct << " + " << res.reason << std::endl; 
 
     loadNextClaimer();
 }
@@ -126,7 +126,7 @@ void SceneCheckIn::onApprove() {
 void SceneCheckIn::onFlag() {
     if (!m_curr) {return; }
     auto res = m_hotel->resolveDecision(DeskDecision::FLAG);
-    std::cout << res.reason << std::endl; 
+    std::cout << res.correct << " + " << res.reason << std::endl; 
 
     loadNextClaimer();
 }
@@ -135,7 +135,6 @@ void SceneCheckIn::onFlag() {
 void SceneCheckIn::handleEvent(const sf::Event& event) {
     if (auto* mm = event.getIf<sf::Event::MouseMoved>()) {
         const sf::Vector2f pos = m_win->mapPixelToCoords({mm->position.x, mm->position.y});
-
 
         if (m_approveButton.getGlobalBounds().contains(pos)) {
             m_approveHover = true; 
@@ -223,6 +222,43 @@ void SceneCheckIn::draw(sf::RenderTarget& target) {
         m_flagButton.setFillColor(m_flagColor);
     }
 
+    // Badge portrait
+    sf::FloatRect bb = m_badgePortrait.getLocalBounds();
+
+    m_badgePortrait.setOrigin(
+        sf::Vector2f(bb.position.x + bb.size.x / 2.f,
+                    bb.position.y + bb.size.y / 2.f)
+    );
+
+    float bw = 128.f;
+    float bh = 128.f;
+    float bScaleX = bw / bb.size.x;
+    float bScaleY = bh / bb.size.y;
+    float bScale = std::min(bScaleX, bScaleY);
+    m_badgePortrait.setScale({bScale, bScale});
+
+    m_badgePortrait.setPosition(sf::Vector2f(300.f, 400.f));
+    target.draw(m_badgePortrait);
+
+    // Live portrait
+    sf::FloatRect lb = m_liveSprite.getLocalBounds();
+
+    m_liveSprite.setOrigin(
+        sf::Vector2f(lb.position.x + lb.size.x / 2.f,
+                    lb.position.y + lb.size.y / 2.f)
+    );
+
+    float lw = 128.f;
+    float lh = 128.f;
+    float lScaleX = lw / lb.size.x;
+    float lScaleY = lh / lb.size.y;
+    float lScale = std::min(lScaleX, lScaleY);
+    m_liveSprite.setScale({lScale, lScale});
+
+    m_liveSprite.setPosition(sf::Vector2f(800.f, 400.f));
+    target.draw(m_liveSprite);
+
+
     target.draw(m_approveButton);
     target.draw(m_flagButton);
     target.draw(m_approveLabel);
@@ -231,5 +267,7 @@ void SceneCheckIn::draw(sf::RenderTarget& target) {
     target.draw(m_name);
     target.draw(m_badgePortrait);
     target.draw(m_liveSprite);
+    
 }
+
 

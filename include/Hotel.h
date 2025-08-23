@@ -58,7 +58,7 @@ public:
 
 private:
     const int m_numberOfRooms = 5; 
-    int m_numGuestsPerRound = 10;
+    int m_numGuestsPerRound = 20;
     std::vector<Room> m_rooms;
     std::vector<Guest> m_allGuests;
     std::vector<Guest> m_roundGuests; 
