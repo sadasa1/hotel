@@ -1,42 +1,41 @@
 #include <SFML/Graphics.hpp>
 #include "App.h"
 
-App::App() : window(sf::VideoMode({1280, 720}), "Hotel Surveillance", sf::Style::Close) {
-    window.setFramerateLimit(60);
+App::App() : m_window(sf::VideoMode({1920, 1080}), "Hotel Game", sf::Style::Close) {
+    m_window.setFramerateLimit(60);
 
     m_hotel.loadAllGuests("data/guests.tsv");
     m_hotel.selectRoundGuests(); 
 
-    currScene = std::make_unique<SceneCheckIn>(&window, &m_hotel);
-    currScene->enter();
-
+    m_scene = std::make_unique<SceneCheckIn>(&m_window, &m_hotel);
+    m_scene->enter();
 }
 
 void App::run() {
     sf::Clock frameClock;
 
-    while (window.isOpen()) {
-        while (auto event = window.pollEvent()) {
+    while (m_window.isOpen()) {
+        while (auto event = m_window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
-                window.close();
+                m_window.close();
                 continue;
             }
             if (const auto* k = event->getIf<sf::Event::KeyPressed>()) {
                 if (k->scancode == sf::Keyboard::Scancode::Escape) {
-                    window.close();
+                    m_window.close();
                     continue;
                 }
             }
-            if (currScene) currScene->handleEvent(*event);
+            if (m_scene) m_scene->handleEvent(*event);
         }
 
         float dt = frameClock.restart().asSeconds();
 
-        if (currScene) currScene->update(dt);
+        if (m_scene) m_scene->update(dt);
 
-        window.clear();
-        if (currScene) currScene->draw(window);
-        window.display();
+        m_window.clear();
+        if (m_scene) m_scene->draw(m_window);
+        m_window.display();
     }
 }
 

@@ -10,11 +10,11 @@
 class App {
 public:
     App();
-    void run(); 
+    void run();
 private:
-    sf::RenderWindow window; 
-    std::unique_ptr<Scene> currScene;
-    Hotel m_hotel;  
+    sf::RenderWindow m_window;
+    std::unique_ptr<Scene> m_scene;
+    Hotel m_hotel;
 };
 
-#endif // APP_H
+#endif

@@ -4,7 +4,6 @@
 #include "DeskDecision.h"
 #include "Room.h"
 #include "Badge.h"
-#include "scenes/SceneCheckIn.h"
 #include "Guest.h"
 #include <vector>
 #include <fstream>
@@ -15,62 +14,67 @@
 #include <cassert>
 #include <algorithm>
 #include <numeric>
-#include <random>
 #include <iostream>
 #include <unordered_map>
+#include <optional>
+
+struct Claimer;
 
 class Hotel {
 public:
-    Hotel(); 
+    Hotel();
+
     void loadAllGuests(const std::string& filepath);
     void selectRoundGuests();
-    int numberOfOccupied() const; 
-    int assignRoom(const std::string& guestID); 
-    int isValidID(const std::string& guestID) const;
-    void clearRooms(); 
-    void displayRoundGuests(); 
 
-    enum class BadgeError {NONE, BAD_FORMAT, UNKNOWN_ID, ALREADY_INSIDE, PORTRAIT_MISMATCH};
-    BadgeError verifyBadge(const Badge&b , const LivePerson& live);
+    int  numberOfOccupied() const;
+    int  assignRoom(const std::string& guestID);
+    int  isValidID(const std::string& guestID) const;
+
+    void clearRooms();
+    void displayRoundGuests();
+
+    enum class BadgeError { NONE, BAD_FORMAT, UNKNOWN_ID, ALREADY_INSIDE, PORTRAIT_MISMATCH };
+    BadgeError verifyBadge(const Badge& b, const LivePerson& live);
 
     bool enter(const std::string& guestID);
     bool exit(const std::string& guestID);
-    bool vacate(const std::string& guestID); 
+    bool vacate(const std::string& guestID);
 
-    Claimer* loadClaimer(); 
-    void resolveClaimer(); 
-    bool syncBadgeFromRound(const std::string& id, Badge& b); 
+    Claimer* loadClaimer();
+    void     resolveClaimer();
+
+    bool        syncBadgeFromRound(const std::string& id, Badge& b);
     std::string pickRandomID(const std::unordered_set<std::string>& s, std::mt19937& rng);
-    LivePerson makeLiveFor(const Guest& g);
-    Badge makeBadgeFor(const Guest& g);
-
-    void injectAnomaly(Claimer& c);
+    LivePerson  makeLiveFor(const Guest& g);
+    Badge       makeBadgeFor(const Guest& g);
+    void        injectAnomaly(Claimer& c);
 
     std::string badgeErrToString(BadgeError err);
 
     struct DecisionResult {
-        bool correct;
+        bool        correct;
         std::string reason;
         std::string guestID;
     };
-    
     DecisionResult resolveDecision(DeskDecision decision);
 
 private:
-    const int m_numberOfRooms = 5; 
-    int m_numGuestsPerRound = 20;
-    std::vector<Room> m_rooms;
+    const int m_numberOfRooms     = 5;
+    const int m_numGuestsPerRound = 20;
+
+    std::vector<Room>  m_rooms;
     std::vector<Guest> m_allGuests;
-    std::vector<Guest> m_roundGuests; 
+    std::vector<Guest> m_roundGuests;
 
     std::mt19937 m_rng;
 
     std::unordered_map<std::string, int> m_roundGuestsByID;
     std::unordered_map<std::string, int> m_roomNumbersByID;
-    std::unordered_set<std::string> m_guestsInside;
+    std::unordered_set<std::string>      m_guestsInside;
 
-    std::optional<Claimer> m_currClaimer; 
+    std::optional<Claimer> m_currClaimer;
     int m_badgeIndex = 0;
 };
 
-#endif // HOTEL_H 
+#endif // HOTEL_H

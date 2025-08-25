@@ -3,5 +3,4 @@
 
 enum class DeskDecision {APPROVE, FLAG};
 
-
 #endif // DESKDECISION_H

@@ -4,7 +4,6 @@ month	day	year	name	guestID	portraitID
 05	27	1970	Skyler White	13007877	guest_13007877
 10	13	1966	Hank Schrader	71596071	guest_71596071
 07	07	1958	Gus Fringaling	68990244	guest_68990244
-08	20	1984	Saul Goodman	25508689	guest_25508689
 11	02	1946	Mike Ehrmant	24143914	guest_24143914
 03	14	1980	Lydia Rodarte	77042218	guest_77042218
 09	29	1971	Todd Alquist	48680927	guest_48680927
@@ -15,7 +14,6 @@ month	day	year	name	guestID	portraitID
 07	19	1982	Krazy-8 Molina	83536168	guest_83536168
 05	03	1968	Tuco Salamanca	27548862	guest_27548862
 10	24	1975	Nacho Varga	40096972	guest_40096972
-01	17	1988	Kim Wexler	94469027	guest_94469027
 08	30	1983	Howard Hamlin	73094973	guest_73094973
 11	11	1961	Chuck McGill	63094298	guest_63094298
 02	14	1956	Bolsa Juan	27053395	guest_27053395
@@ -32,7 +30,6 @@ month	day	year	name	guestID	portraitID
 08	12	2009	Brock Cantillo	47146396	guest_47146396
 02	07	1976	Victor Man	72203929	guest_72203929
 12	21	1982	Tyrus Kitt	23671379	guest_23671379
-06	18	1952	Don Bolsa	80771683	guest_80771683
 01	04	1973	Stannis Baratheon	34529018	guest_34529018
 03	12	1968	Cersei Lannister	87456190	guest_87456190
 11	28	1975	Jaime Lannister	12938465	guest_12938465
@@ -44,7 +41,6 @@ month	day	year	name	guestID	portraitID
 12	12	1948	Eddard Stark	48231759	guest_48231759
 10	25	1950	Robert Baratheon	89012345	guest_89012345
 08	03	1962	Petyr Baelish	23789165	guest_23789165
-01	29	1977	Varys Whisperer	54321987	guest_54321987
 04	21	1964	Jorah Mormont	67891234	guest_67891234
 07	19	1958	Theon Greyjoy	32198745	guest_32198745
 09	04	1979	Bronn Sellsword	43219876	guest_43219876
@@ -56,7 +52,6 @@ month	day	year	name	guestID	portraitID
 08	27	1982	Ada Shelby	76981325	guest_76981325
 05	06	1980	Grace Burgess	98013247	guest_98013247
 11	09	1967	Luca Changretta	69403821	guest_69403821
-09	20	1975	Michael Gray	25938176	guest_25938176
 07	04	1972	Linda Shelby	48190237	guest_48190237
 06	11	1977	Lizzie Stark	10398472	guest_10398472
 04	15	1965	Chester Campbell	86753092	guest_86753092
