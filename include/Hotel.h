@@ -26,16 +26,15 @@ public:
 
     void loadAllGuests(const std::string& filepath);
     void selectRoundGuests();
+    void clearRooms();
+    std::vector<Guest>& getRoundGuests();
+
+    int  isValidID(const std::string& guestID) const;
+    enum class BadgeError { NONE, BAD_FORMAT, UNKNOWN_ID, ALREADY_INSIDE, PORTRAIT_MISMATCH };
+    BadgeError verifyBadge(const Badge& b, const LivePerson& live);
 
     int  numberOfOccupied() const;
     int  assignRoom(const std::string& guestID);
-    int  isValidID(const std::string& guestID) const;
-
-    void clearRooms();
-    void displayRoundGuests();
-
-    enum class BadgeError { NONE, BAD_FORMAT, UNKNOWN_ID, ALREADY_INSIDE, PORTRAIT_MISMATCH };
-    BadgeError verifyBadge(const Badge& b, const LivePerson& live);
 
     bool enter(const std::string& guestID);
     bool exit(const std::string& guestID);
@@ -57,6 +56,7 @@ public:
         std::string reason;
         std::string guestID;
     };
+
     DecisionResult resolveDecision(DeskDecision decision);
 
 private:
@@ -72,6 +72,7 @@ private:
     std::unordered_map<std::string, int> m_roundGuestsByID;
     std::unordered_map<std::string, int> m_roomNumbersByID;
     std::unordered_set<std::string>      m_guestsInside;
+    std::vector<std::string> m_outsiders;
 
     std::optional<Claimer> m_currClaimer;
     int m_badgeIndex = 0;

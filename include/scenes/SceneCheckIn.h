@@ -17,17 +17,16 @@ public:
     explicit SceneCheckIn(sf::RenderWindow* win, Hotel* h);
     virtual ~SceneCheckIn() = default;
 
-    void playFromPool(std::vector<sf::Sound>& pool, float volume);
-
     virtual void enter();
     virtual void exit();
-    virtual void handleEvent(const sf::Event& event);
-    virtual void update(float dt);
-    virtual void draw(sf::RenderTarget& target);
 
     void loadNextClaimer();
     void onApprove();
     void onFlag();
+
+    virtual void handleEvent(const sf::Event& event);
+    virtual void update(float dt);
+    virtual void draw(sf::RenderTarget& target);
 
     bool contains(const sf::Shape& s, const sf::Vector2f& p);
     void styleButton(sf::RectangleShape& r, sf::Text& label, const sf::Vector2f& pos, const sf::Vector2f& size,
@@ -41,15 +40,20 @@ public:
         bool active = false;
         bool starting = false;
         void reset(const sf::Vector2f& s, const sf::Vector2f& e, float d) {
-            start = s;
-            end = e;
-            duration = d;
-            t = 0.f;
-            active = true;
+            start = s; end = e; duration = d; t = 0.f; active = true;
         }
     };
 
 private:
+    void playFromPool(std::vector<sf::Sound>& pool, float volume);
+    void showFeedback(const std::string& msg);
+    void rebuildRosterRT();
+    void updateButtonsVisual();
+    static sf::Vector2f lerp(const sf::Vector2f& a, const sf::Vector2f& b, float k);
+    static float easeOutCubic(float x);
+    static void fitSprite(sf::Sprite& sprite, const sf::FloatRect& box);
+    static void centerScaleSpriteToBox(sf::Sprite& sprite, float boxSize);
+
     sf::RenderWindow* m_win = nullptr;
     Hotel* m_hotel = nullptr;
     Claimer* m_curr = nullptr;
@@ -85,6 +89,9 @@ private:
     sf::SoundBuffer m_badgeSlideBuf;
     std::vector<sf::Sound> m_badgeSlide;
 
+    sf::SoundBuffer m_wrongBuf;
+    std::vector<sf::Sound> m_wrong;
+
     sf::Music m_rain;
     sf::Music m_ambience;
     sf::Music m_clockTicking;
@@ -115,6 +122,22 @@ private:
 
     sf::RectangleShape m_divider;
     sf::RectangleShape m_dividerL;
+
+    bool m_showRoster = false;
+    float m_rosterScroll = 0.f;
+    bool m_rosterDirty = false;
+
+    sf::FloatRect m_rosterRect;
+    sf::RectangleShape m_rosterBg;
+    sf::Text m_rosterHeader;
+    std::vector<sf::Text> m_rosterRows;
+    sf::RenderTexture m_rosterRT;
+    sf::Sprite m_rosterSprite;
+
+    sf::RectangleShape m_feedbackBg;
+    sf::Text m_feedbackText;
+    float m_feedbackTimer = 0.f;
+    bool m_feedbackVisible = false; 
 };
 
-#endif
+#endif // SCENECHECKIN_H
