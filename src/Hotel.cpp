@@ -247,7 +247,6 @@ void Hotel::injectAnomaly(Claimer& c) {
         return;
     }
 
-
     if (r < 100) {
         const std::string correct = c.live.observedPortraitID;
         const std::string onBadge = c.badge.portraitID;
