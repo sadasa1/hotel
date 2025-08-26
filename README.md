@@ -3,6 +3,10 @@
 ## 🏨 **Hotel Desk Game**
 An immersive C++/SFML simulation where players step into the role of a desk clerk in an eerie hotel and detect anomalies in guests checking in.
 
+![Gameplay Demo](demo.gif)
+
+### FULL DEMO LINK: [https://youtu.be/Y1LotFzByAA]
+
 ### 🧪 Game Rules & Anomalies
 For each arriving claimer, you see:
 a badge (guestID, name, portraitID), and
