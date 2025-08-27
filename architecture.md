@@ -9,29 +9,31 @@ This project is a small SFML game with a desk-only loop inspired by document-che
 
 ```mermaid
 flowchart LR
-    subgraph OS[OS / SFML]
-      Evt[Events]
-      Timer[Clock / dt]
-    end
+  subgraph "OS / SFML"
+    Evt["Events"]
+    Timer["Clock / dt"]
+  end
 
-    subgraph App[App]
-      Run[run():
-while (window.open)] --> Dispatch{{Active Scene}}
-    end
+  subgraph App
+    Run["run()<br/>while window.isOpen"]
+    Dispatch{{Active Scene}}
+    Run --> Dispatch
+  end
 
-    Evt -->|pollEvent| App
-    Timer -->|dt| App
+  Evt -->|"pollEvent"| App
+  Timer -->|dt| App
 
-    subgraph Scene[Scene (interface)]
-      Enter[enter()]
-      Handle[handleEvent(evt)]
-      Update[update(dt)]
-      Draw[draw(target)]
-    end
+  subgraph "Scene (interface)"
+    Enter["enter()"]
+    Handle["handleEvent(evt)"]
+    Update["update(dt)"]
+    Draw["draw(target)"]
+  end
 
-    Dispatch --> Handle
-    Dispatch --> Update
-    Dispatch --> Draw
+  Dispatch --> Handle
+  Dispatch --> Update
+  Dispatch --> Draw
+
 ```
 
 **Notes**
@@ -56,28 +58,28 @@ stateDiagram-v2
 
 ```mermaid
 flowchart TB
-    Guests[**data/guests.tsv**] -->|App::loadAllGuests| Hotel
+    Guests["data/guests.tsv"] -->|"App.loadAllGuests()"| All
 
-    subgraph Hotel[Hotel (game logic)]
-      All[m_allGuests]
-      Round[m_roundGuests + index/maps]
-      Claimer[(Claimer: Badge + LivePerson)]
-      Verify[verifyBadge():
-BAD_FORMAT • UNKNOWN_ID • ALREADY_INSIDE • PORTRAIT_MISMATCH • NONE]
-      Rooms[Rooms / inside-set]
-      Anom[injectAnomaly()]
+    subgraph Hotel ["Hotel (game logic)"]
+      All["m_allGuests"]
+      Round["m_roundGuests + index/maps"]
+      Claimer["Claimer: Badge + LivePerson"]
+      Verify["verifyBadge()<br/>BAD_FORMAT • UNKNOWN_ID • ALREADY_INSIDE • PORTRAIT_MISMATCH • NONE"]
+      Rooms["Rooms / inside-set"]
+      Anom["injectAnomaly()"]
     end
 
-    Hotel -->|selectRoundGuests()| Round
-    Round -->|loadClaimer()| Claimer
+    All -->|"selectRoundGuests()"| Round
+    Round -->|"loadClaimer()"| Claimer
     Claimer --> Anom
-    Claimer -->|to SceneCheckIn| UI[SceneCheckIn UI]
+    Claimer -->|"to SceneCheckIn"| UI["SceneCheckIn UI"]
 
-    UI -->|Approve/Flag| Verify
+    UI -->|"Approve / Flag"| Verify
     Verify --> Rooms
-    Rooms -->|enter()/vacate()/exit()| Hotel
+    Rooms -->|"enter()/vacate()/exit()"| All
 
-    UI -->|draw()| Render[(SFML draw calls)]
+    UI -->|"draw()"| Render["SFML draw calls"]
+
 ```
 
 **Validation path**
