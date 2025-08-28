@@ -4,7 +4,7 @@
 
 ![Demo gameplay](demo.gif)
 
-[Full Demo](https://www.youtube.com/watch?v=Y1LotFzByAA)
+## [[Full Demo](https://www.youtube.com/watch?v=Y1LotFzByAA)]
 
 ---
 
